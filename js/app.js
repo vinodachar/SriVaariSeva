@@ -43,12 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Puja Pricing Data & Info ---
     const pujaData = {
-        'satyanarayan': { name: 'Satyanarayan Puja', price: '₹4,500', duration: '3 Hours' },
+        'kumbhabishekam': { name: 'Kumbhabishekam', price: 'TBD', duration: 'Flexible' },
         'grihapravesh': { name: 'Griha Pravesh Puja (Housewarming)', price: '₹8,500', duration: '4 Hours' },
-        'ganapathi': { name: 'Maha Ganapathi Homa', price: '₹6,000', duration: '3.5 Hours' },
-        'laxmi': { name: 'Laxmi Kubera Puja', price: '₹5,500', duration: '2.5 Hours' },
-        'rudrabhishek': { name: 'Rudrabhishek Puja', price: '₹7,500', duration: '3 Hours' },
-        'marriage': { name: 'Marriage / Engagement Ceremony', price: '₹15,000', duration: '5 Hours' },
+        'satyanarayana': { name: 'Satyanarayana Puja', price: '₹4,500', duration: '3 Hours' },
+        'ganapathi': { name: 'Ganapathi Homa', price: '₹6,000', duration: '3.5 Hours' },
+        'sudarshana': { name: 'Shudarshana Aradhana & Homa', price: '₹9,500', duration: '4 Hours' },
+        'devara_kalyana': { name: 'Devara Kalyana & Unions', price: '₹18,000', duration: '5 Hours' },
         'other': { name: 'Custom Puja Ritual', price: 'TBD', duration: 'Flexible' }
     };
 
@@ -115,10 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateBookingSummary(pujaKey) {
         const data = pujaData[pujaKey];
-        if (data && summaryTitle && summaryDuration && summaryPrice) {
+        if (data && summaryTitle) {
             summaryTitle.textContent = data.name;
-            summaryDuration.textContent = `Duration: ~${data.duration}`;
-            summaryPrice.textContent = data.price;
+            if (summaryPrice) {
+                summaryPrice.textContent = data.price;
+            }
         }
     }
 
@@ -247,4 +248,64 @@ document.addEventListener('DOMContentLoaded', () => {
             element.classList.add('appear');
         });
     }
+
+    // --- Falling Flower Petals Effect ---
+    const flowerContainer = document.getElementById('heroFlowerContainer');
+    if (flowerContainer) {
+        const petalColors = ['#ff9933', '#e65c00', '#ffd700', '#ff4500']; // marigold orange, dark orange, gold, orange-red
+        const spawnCount = 30; // total concurrent petals
+        
+        for (let i = 0; i < spawnCount; i++) {
+            createPetal(true); // Initial load: distribute vertically so they don't all start at the top
+        }
+        
+        function createPetal(initial = false) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            // Randomize size
+            const size = Math.random() * 12 + 6; // 6px to 18px
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size * 1.5}px`; // slightly elongated shape
+            
+            // Randomize color
+            petal.style.backgroundColor = petalColors[Math.floor(Math.random() * petalColors.length)];
+            
+            // Randomize starting horizontal position
+            petal.style.left = `${Math.random() * 100}%`;
+            
+            // Randomize animation duration and delay
+            const duration = Math.random() * 8 + 6; // 6s to 14s fall time
+            const delay = initial ? -(Math.random() * duration) : 0; // if initial, stagger them vertically
+            
+            petal.style.animationName = 'fall, sway';
+            petal.style.animationDuration = `${duration}s, ${Math.random() * 4 + 3}s`;
+            if (delay) petal.style.animationDelay = `${delay}s, ${delay}s`;
+            petal.style.animationTimingFunction = 'linear, ease-in-out';
+            petal.style.animationIterationCount = 'infinite, infinite';
+            
+            // Randomize rotation
+            petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            // Append to container
+            flowerContainer.appendChild(petal);
+            
+            // Remove petal after animation and respawn
+            setTimeout(() => {
+                petal.remove();
+                createPetal(false);
+            }, (duration + (delay ? delay : 0)) * 1000);
+        }
+    }
+
+    // --- Auto-open Booking Modal after 2 seconds ---
+    setTimeout(() => {
+        if (bookingModal && !bookingModal.classList.contains('active')) {
+            bookingModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (pujaSelect) {
+                updateBookingSummary(pujaSelect.value);
+            }
+        }
+    }, 2000);
 });
