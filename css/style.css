@@ -504,6 +504,26 @@ header {
     padding-right: 20px;
 }
 
+#astrologer .split-container {
+    grid-template-areas: 
+        "header image"
+        "content image";
+    align-items: start;
+}
+
+#astrologer .split-header {
+    grid-area: header;
+}
+
+#astrologer .split-image-container {
+    grid-area: image;
+    align-self: center;
+}
+
+#astrologer .split-content-text {
+    grid-area: content;
+}
+
 .split-text .section-title {
     text-align: left;
 }
@@ -1342,6 +1362,13 @@ textarea.form-control {
     .split-container {
         grid-template-columns: 1fr;
         gap: 40px;
+    }
+    #astrologer .split-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "image"
+            "content";
     }
     .split-image {
         height: 350px;
