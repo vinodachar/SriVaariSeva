@@ -640,6 +640,7 @@ header {
 }
 
 .service-card {
+    position: relative;
     background-color: var(--bg-white);
     border-radius: var(--border-radius-md);
     overflow: hidden;
@@ -648,11 +649,14 @@ header {
     transition: var(--transition-smooth);
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--box-shadow-lg);
+    transform: translateY(-12px) scale(1.03);
+    z-index: 5;
+    border-color: var(--secondary-gold);
+    box-shadow: var(--box-shadow-lg), 0 10px 25px rgba(212, 175, 55, 0.25);
 }
 
 .service-img-wrapper {
@@ -783,49 +787,16 @@ header {
     background-color: var(--bg-cream);
 }
 
-.gallery-track-container {
-    overflow: hidden;
-    width: 100%;
-    padding: 30px 0;
-    position: relative;
-}
-
-/* Fading mask on edges for scroll visual transition */
-.gallery-track-container::before,
-.gallery-track-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 100px;
-    height: 100%;
-    z-index: 5;
-    pointer-events: none;
-}
-.gallery-track-container::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg-cream) 0%, transparent 100%);
-}
-.gallery-track-container::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg-cream) 0%, transparent 100%);
-}
-
-.gallery-track {
-    display: flex;
-    gap: 24px;
-    width: max-content;
-    animation: scrollGallery 45s linear infinite;
-    padding: 15px 0; /* Gutter to prevent shadow clipping on hover pop */
-}
-
-/* Pause horizontal scrolling when cursor is over container */
-.gallery-track-container:hover .gallery-track {
-    animation-play-state: paused;
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 15px 0;
 }
 
 .gallery-item {
     position: relative;
-    flex: 0 0 320px;
+    width: 100%;
     aspect-ratio: 4/3;
     border-radius: var(--border-radius-md);
     overflow: hidden;
@@ -869,7 +840,7 @@ header {
 }
 
 .gallery-item:hover {
-    transform: scale(1.15) translateY(-8px); /* Bouncy pop animation */
+    transform: scale(1.05) translateY(-5px); /* Gentler scale to prevent grid overlaps */
     z-index: 10;
     box-shadow: var(--box-shadow-lg);
     border-color: var(--secondary-gold);
@@ -886,15 +857,6 @@ header {
 .gallery-item:hover .gallery-overlay-text {
     opacity: 1;
     transform: translateY(0);
-}
-
-@keyframes scrollGallery {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
 }
 
 /* --- Section: FAQ Accordion --- */
@@ -1356,8 +1318,9 @@ textarea.form-control {
     .features-grid, .services-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    .gallery-item {
-        flex: 0 0 290px;
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
     .split-container {
         grid-template-columns: 1fr;
@@ -1419,8 +1382,9 @@ textarea.form-control {
     .features-grid, .services-grid {
         grid-template-columns: 1fr;
     }
-    .gallery-item {
-        flex: 0 0 250px;
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     .footer-grid {
         grid-template-columns: 1fr;
